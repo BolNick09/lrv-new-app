@@ -7,20 +7,28 @@ use App\Task;
 
 class TestController extends Controller
 {
-    function showAll()
+    public function showAll()
     {
-        $tasks = Task::all();
+        $tasks = Task::getAll();
         return view('task.all', ['tasks' => $tasks]);
     }
 
-    function showOne($id)
+    public function showOne($id)
     {
         $task = Task::find($id);
         
-        if (!$task) {
+        if (!$task) 
             abort(404, 'Задача не найдена');
-        }
+        
         
         return view('task.one', ['task' => $task]);
     }
+
+    public function showEdit($id)
+    {
+        $task = Task::find($id);
+        return view ('task.edit', ['task' => $task]);
+    }
+
+
 }

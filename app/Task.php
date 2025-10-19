@@ -10,20 +10,23 @@ class Task
         public string $title
     ) {}
 
-
-    public static function all(): array
+    private static $tasks = [];
+    public static function staticConstruct(): void
     {
-        return [
+        self::$tasks = [
             new self(1, '2025-10-06', 'Отметить конец дня'),
             new self(2, '2025-10-07', 'Сделать домашку'),
             new self(3, '2025-10-08', 'Сходить в магазин'),
         ];
     }
-
+    public static function getAll() : array
+    {
+        return self::$tasks;
+    }
 
     public static function find(int $id): ?Task
     {
-        foreach (self::all() as $task) 
+        foreach (self::$tasks as $task) 
         {
             if ($task->id === $id) 
                 return $task;
@@ -32,3 +35,5 @@ class Task
         return null;
     }
 }
+
+Task::staticConstruct();
