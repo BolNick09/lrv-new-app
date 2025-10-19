@@ -30,5 +30,15 @@ class TestController extends Controller
         return view ('task.edit', ['task' => $task]);
     }
 
+    public function showCreate()
+    {
+        $task = new \stdClass();
+        $task->id = '';
+        $task->title = '';
+        $task->due = '';
+        
+        return view('task.create', ['task' => $task]);
+    }
+
 
 }
