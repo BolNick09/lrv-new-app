@@ -20,35 +20,61 @@ class TestController extends Controller
         if (!$task) 
             abort(404, 'Задача не найдена');
         
-        
         return view('task.one', ['task' => $task]);
     }
 
     public function showEdit($id)
     {
         $task = Task::find($id);
-        return view ('task.edit', ['task' => $task]);
+        return view('task.edit', ['task' => $task]);
     }
 
     public function showCreate()
     {
-        $task = new \stdClass();
-        $task->id = '';
-        $task->title = '';
-        $task->due = '';
-        
+        $task = new Task();
         return view('task.create', ['task' => $task]);
     }
 
-    public function insert (Request $request)
+    public function insert(Request $request)
     {
-        $task = new Task;
-        $task->title = $request->title;
-        $task->due = $request->due;
-        $task->save();
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'due' => 'required|date',
+        ]);
 
-        return redirect ('/tasks');
+        Task::create([
+            'title' => $validated['title'],
+            'due' => $validated['due'],      
+        ]);
+
+        return redirect('/tasks');
     }
 
+    public function update(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required|exists:tasks,id',
+            'title' => 'required|string|max:255',
+            'due' => 'required|date',
+        ]);
 
+        $task = Task::find($validated['id']);
+        $task->update([
+            'title' => $validated['title'],
+            'due' => $validated['due']
+        ]);
+
+        return redirect('/task/' . $task->id);
+    }
+
+    public function delete($id)
+    {
+        $task = Task::find($id);
+        
+        if ($task) {
+            $task->delete();
+        }
+
+        return redirect('/tasks');
+    }
 }
