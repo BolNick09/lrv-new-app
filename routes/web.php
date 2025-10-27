@@ -11,3 +11,5 @@ Route::get('/', function ()
 Route::get('/tasks', [TestController::class, 'showAll']);
 Route::get('/task/{id}', [TestController::class, 'showOne']);
 Route::get('/task/edit/{id}', [TestController::class, 'showEdit']);
+
+Route::get('/task/insert', [TestController::class, 'insert']);

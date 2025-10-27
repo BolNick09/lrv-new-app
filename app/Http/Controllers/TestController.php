@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Task;
+use App\Models\Task;
 
 class TestController extends Controller
 {
     public function showAll()
     {
-        $tasks = Task::getAll();
+        $tasks = Task::all();
         return view('task.all', ['tasks' => $tasks]);
     }
 
@@ -38,6 +38,16 @@ class TestController extends Controller
         $task->due = '';
         
         return view('task.create', ['task' => $task]);
+    }
+
+    public function insert (Request $request)
+    {
+        $task = new Task;
+        $task->title = $request->title;
+        $task->due = $request->due;
+        $task->save();
+
+        return redirect ('/tasks');
     }
 
 
