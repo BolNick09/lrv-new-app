@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Redirect;
 
 class TestController extends Controller
 {
@@ -52,6 +54,7 @@ class TestController extends Controller
 
     public function update(Request $request)
     {
+
         $validated = $request->validate([
             'id' => 'required|exists:tasks,id',
             'title' => 'required|string|max:255',
@@ -59,7 +62,12 @@ class TestController extends Controller
         ]);
 
         $task = Task::find($validated['id']);
-        $task->update([
+        if (!Gate::allows('update-task', $task))
+        {
+            return Redirect::back()->withErrors(['error' => 'не хватает прав']);
+        }
+        $task->update
+        ([
             'title' => $validated['title'],
             'due' => $validated['due']
         ]);
@@ -71,9 +79,8 @@ class TestController extends Controller
     {
         $task = Task::find($id);
         
-        if ($task) {
-            $task->delete();
-        }
+        if ($task) 
+            $task->delete();        
 
         return redirect('/tasks');
     }

@@ -8,8 +8,11 @@ class Task extends Model
 {
     public $timestamps = false;
     
-    protected $fillable = ['title', 'due', 'url', 'urgency_id'];
+    protected $guarded = [];
     
+    
+    // protected $fillable = ['title', 'due', 'url', 'urgency_id']; равносильно ^   
+
     protected $attributes = [
         'url' => '',
         'urgency_id' => 3
