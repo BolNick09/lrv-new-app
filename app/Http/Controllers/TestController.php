@@ -6,18 +6,25 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 
 class TestController extends Controller
 {
     public function showAll()
     {
-        $tasks = Task::all();
+        // Если пользователь администратор - показываем все задачи, иначе только свои
+        if (Auth::user()->isAdministrator())             
+            $tasks = Task::with('user')->get();
+        else 
+            $tasks = Task::with('user')->where('user_id', Auth::id())->get();
+        
+        
         return view('task.all', ['tasks' => $tasks]);
     }
 
     public function showOne($id)
     {
-        $task = Task::find($id);
+         $task = Task::with('user')->find($id);
         
         if (!$task) 
             abort(404, 'Задача не найдена');
@@ -27,7 +34,10 @@ class TestController extends Controller
 
     public function showEdit($id)
     {
-        $task = Task::find($id);
+         $task = Task::with('user')->find($id);
+        
+        if (!$task) 
+            abort(404, 'Задача не найдена');
         return view('task.edit', ['task' => $task]);
     }
 
@@ -46,7 +56,8 @@ class TestController extends Controller
 
         Task::create([
             'title' => $validated['title'],
-            'due' => $validated['due'],      
+            'due' => $validated['due'],  
+            'user_id' => Auth::id(),    
         ]);
 
         return redirect('/tasks');
@@ -59,6 +70,7 @@ class TestController extends Controller
             'id' => 'required|exists:tasks,id',
             'title' => 'required|string|max:255',
             'due' => 'required|date',
+            
         ]);
 
         $task = Task::find($validated['id']);

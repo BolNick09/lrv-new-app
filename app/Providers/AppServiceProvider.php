@@ -21,10 +21,26 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('update-task', function(User $user, Task $task)
+        // Gate::define('update-task', function(User $user, Task $task)
+        // {
+        //     //true - если действие разрешено, false - запрещено
+        //     return $task->due < date('Y-m-d');
+        // });
+        // $this->registerPolicies();
+
+        Gate::define('view-task', function (User $user, Task $task) 
         {
-            //true - если действие разрешено, false - запрещено
-            return $task->due < date('Y-m-d');
+            return $user->isAdministrator() || $task->user_id === $user->id;
+        });
+
+        Gate::define('update-task', function (User $user, Task $task) 
+        {
+            return $user->isAdministrator() || $task->user_id === $user->id;
+        });
+
+        Gate::define('delete-task', function (User $user, Task $task) 
+        {
+            return $user->isAdministrator() || $task->user_id === $user->id;
         });
     }
 }
