@@ -17,4 +17,9 @@ class Task extends Model
         'url' => '',
         'urgency_id' => 3
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
