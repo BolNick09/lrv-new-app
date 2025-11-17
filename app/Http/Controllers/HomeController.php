@@ -38,5 +38,12 @@ class HomeController extends Controller
 
         return view ('profile', ['profile' => $profile, 'user' => $user, 'posts' => $posts]);
     }
+    public function users()
+    {
+        $users = \App\Models\User::with('roles')->get();
+        $roles = \App\Models\Role::with('users')->get();
+        
+        return view('users', compact('users', 'roles'));
+    }
 
 }
