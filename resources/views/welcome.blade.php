@@ -7,5 +7,9 @@
     </head>
     <body>
         <h1>Добро пожаловать, {{ $name ?? 'отсюда' }}</h1>
+
+        <livewire:Counter count="5"/>
+        <livewire:mirror-text text="Привет"/>
+
     </body>
 </html>
