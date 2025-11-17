@@ -10,6 +10,7 @@
 
         <livewire:Counter count="5"/>
         <livewire:mirror-text text="Привет"/>
+        <livewire:create-post/>
 
     </body>
 </html>
