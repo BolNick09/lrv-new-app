@@ -16,9 +16,13 @@ Route::group(['middleware' => 'auth'], function()
     Route::get('/task/edit/{id}', [TestController::class, 'showEdit']);
     Route::get('/task/create', [TestController::class, 'showCreate']);
 
+    Route::get('/profile', [HomeController::class, 'profile']);
+
     Route::post('/task/create', [TestController::class, 'insert']);
     Route::post('/task/update', [TestController::class, 'update']);
     Route::delete('/task/delete/{id}', [TestController::class, 'delete']);
+
+
 
 });
 

@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\{BelongsToMany, HasOne, BelongsTo, HasMany};
+
 
 class User extends Authenticatable
 {
@@ -52,6 +53,14 @@ class User extends Authenticatable
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'user_roles');
+    }
+    public function profile(): HasOne
+    {
+        return $this->hasOne(Profile::class);
+    }
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
     }
 
     public function hasRole($roleName)
