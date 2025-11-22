@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\{TestController, HomeController};
 use Illuminate\Support\Facades\{Route, Auth};
-
+use App\Http\Livewire\AssignRole;
 
 Route::get('/', function () 
 {
@@ -23,8 +23,8 @@ Route::group(['middleware' => 'auth'], function()
     Route::delete('/task/delete/{id}', [TestController::class, 'delete']);
 
     Route::get('/users', [HomeController::class, 'users']); 
-
-
+    // Route::get('/assign-role', AssignRole::class)->name('assign.role');
+    Route::get('/assign-role', function () {return view('assign-role-page');})->name('assign.role');
 
 });
 
